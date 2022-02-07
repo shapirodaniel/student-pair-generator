@@ -192,6 +192,7 @@ const renderPage = () => {
           await navigator.clipboard.writeText(modelPre.innerText);
         });
         PAGE.appendChild(copyBtn);
+        copyBtn.scrollIntoView();
       });
 
       reader.readAsBinaryString(file);
