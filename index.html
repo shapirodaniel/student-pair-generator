@@ -5,9 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Pair Generator</title>
+    <link rel="stylesheet" href="./index.css" />
     <script defer src="./index.js"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <section id="page">
+      <h1>Student Pair Generator</h1>
+      <div id="radio-group-container">
+        <label for="type-of-generator">Lab/Workshop</label>
+        <input
+          type="radio"
+          id="lab-or-workshop"
+          name="type-of-generator"
+          value="Lab/Workshop"
+          checked
+        />
+        <label for="type-of-generator">REACTO</label>
+        <input
+          type="radio"
+          id="reacto"
+          name="type-of-generator"
+          value="REACTO"
+        />
+      </div>
+      <label for="excluded-pairs">
+        List students who should not work together as <br />comma-separated
+        pairs below, one pair per line
+      </label>
+      <textarea
+        id="excluded-pairs"
+        placeholder="...alice, bob"
+        rows="4"
+      ></textarea>
+      <div id="upload-container">
+        <label
+          for="student-list"
+          onclick="() => { document.querySelector('#student-list').click() }"
+          >Click to upload a student list (CSV)</label
+        >
+        <input
+          type="file"
+          id="student-list"
+          name="student-list"
+          accept="text/csv, text/plain"
+        />
+      </div>
+    </section>
   </body>
 </html>

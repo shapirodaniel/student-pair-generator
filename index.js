@@ -1,44 +1,3 @@
-const ROOT = document.getElementById('root');
-
-const page = `
-  <section id="page">
-    <h1>Student Pair Generator</h1>
-    <label for="type-of-generator">Select Lab/Workshop pairs or REACTO pairs</label>
-    <p/>
-      <label for="excluded-pairs">List exclusions here as comma-separated groups on separate lines</label>
-      <div>Example: alice, bob</div>
-      <textarea id="excluded-pairs"></textarea>
-    <p/>
-    <div>
-      <label for="type-of-generator">Lab/Workshop</label>
-      <input 
-        type="radio" 
-        id="lab-or-workshop" 
-        name="type-of-generator" 
-        value="Lab/Workshop"
-        checked
-      />
-      <label for="type-of-generator">REACTO</label>
-      <input 
-        type="radio" 
-        id="reacto" 
-        name="type-of-generator" 
-        value="REACTO"
-      />
-    </div>
-    <p/>
-    <div>
-      <label for="student-list">Upload a student list (CSV)</label>
-      <input
-        type="file"
-        id="student-list"
-        name="student-list"
-        accept="text/csv, text/plain"
-      />
-    </div>
-  </section>
-`;
-
 const shuffle = (arr) => {
   let end = arr.length - 1;
   while (end > 0) {
@@ -60,10 +19,12 @@ const parseModel = (model, starter) => {
   const pairStarter = '';
   let result = starter === 'REACTO' ? interviewStarter : pairStarter;
 
+  let pairIndex = 2;
+
   model.forEach((m) => {
-    result += `${starter === 'REACTO' ? interviewerEmoji : personEmoji} ${
-      m.interviewer
-    }\n`;
+    result += `Room ${pairIndex}\n${
+      starter === 'REACTO' ? interviewerEmoji : personEmoji
+    } ${m.interviewer}\n`;
 
     if (m.interviewee_one) {
       result += `${starter === 'REACTO' ? intervieweeEmoji : personEmoji} ${
@@ -78,14 +39,13 @@ const parseModel = (model, starter) => {
     }
 
     result += '\n\n';
+    pairIndex++;
   });
 
   return result;
 };
 
 const renderPage = () => {
-  ROOT.innerHTML = page;
-
   const PAGE = document.getElementById('page');
   const FILE_INPUT = document.getElementById('student-list');
 
