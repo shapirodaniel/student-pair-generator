@@ -54,6 +54,12 @@ const hydrate = () => {
 
   FILE_INPUT.addEventListener('change', function () {
     if (this.files && this.files[0]) {
+      if (modelPre) {
+        document.removeChild(modelPre);
+        document.removeChild(shuffleBtn);
+        document.removeChild(copyBtn);
+      }
+
       const file = this.files[0];
       const reader = new FileReader();
 
@@ -71,8 +77,9 @@ const hydrate = () => {
           target.push(names[i]);
         }
 
+        const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
+
         function getExclusionList() {
-          const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
           return EXCLUDED_PAIRS.value
             .split('\n')
             .map((pair) => pair.split(/\,\s+|\,\s?/));
@@ -179,8 +186,7 @@ const hydrate = () => {
         copyBtn.scrollIntoView();
 
         // listen for changes to textures
-        document.getElementById('excluded-students')
-          .addEventListener('blur', () => {
+        EXCLUDED_PAIRS.addEventListener('blur', () => {
             exclusionList = getExclusionList();
             const newModel = parseModel(finalizeModel(), selectedRadioGroup);
             document.getElementById('modelPre').innerHTML = newModel;
