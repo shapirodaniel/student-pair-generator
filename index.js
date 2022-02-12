@@ -10,6 +10,8 @@ const shuffle = (arr) => {
   }
 };
 
+// convert model to string
+// emojis assigned on basis of radio group selection
 const parseModel = (model, starter) => {
   const personEmoji = '👤';
   const interviewerEmoji = '📖';
@@ -45,6 +47,7 @@ const parseModel = (model, starter) => {
   return result;
 };
 
+// driver
 const hydrate = () => {
   const PAGE = document.getElementById('page');
   const FILE_INPUT = document.getElementById('student-list');
@@ -78,6 +81,7 @@ const hydrate = () => {
           shuffle(interviewees);
         };
 
+        // build model [ { interviewer: person1, interviewee: person2 }, ... ]
         const getModel = () => {
           shufflePairs();
 
@@ -97,10 +101,11 @@ const hydrate = () => {
           return model;
         };
 
+        // validate pairings and reshuffle if excluded pair is detected
         function finalizeModel() {
           let model = getModel();
           let runs = 0;
-          // rerun pair algorithm if excluded pair is generated
+
           while (
             model.some((m) => {
               if (m.interviewee_one) {
@@ -150,7 +155,7 @@ const hydrate = () => {
         modelPre.innerText = parseModel(finalizeModel(), selectedRadioGroup);
         PAGE.appendChild(modelPre);
 
-        // copy pairs button
+        // shuffle pairs button
         const shuffleBtn = document.createElement('button');
         shuffleBtn.id = 'shuffleBtn';
         shuffleBtn.innerText = 'Shuffle Pairs';
@@ -159,6 +164,7 @@ const hydrate = () => {
           document.getElementById('modelPre').innerHTML = newModel;
         });
 
+        // copy pairs button
         const copyBtn = document.createElement('button');
         copyBtn.innerText = 'Copy Pairs';
         copyBtn.addEventListener('click', async () => {
