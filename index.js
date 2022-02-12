@@ -80,6 +80,7 @@ const hydrate = () => {
         const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
 
         function getExclusionList() {
+          alert(EXCLUDED_PAIRS.value);
           return EXCLUDED_PAIRS.value
             .split('\n')
             .map((pair) => pair.split(/\,\s+|\,\s?/));
@@ -186,11 +187,11 @@ const hydrate = () => {
         copyBtn.scrollIntoView();
 
         // listen for changes to textures
-        EXCLUDED_PAIRS.addEventListener('blur', () => {
+        EXCLUDED_PAIRS.addEventListener('focusout', () => {
             exclusionList = getExclusionList();
             const newModel = parseModel(finalizeModel(), selectedRadioGroup);
             document.getElementById('modelPre').innerHTML = newModel;
-          });
+        });
       });
 
       reader.readAsBinaryString(file);
