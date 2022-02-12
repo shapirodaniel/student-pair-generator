@@ -82,7 +82,6 @@ const hydrate = () => {
         const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
 
         function getExclusionList() {
-          alert(EXCLUDED_PAIRS.value);
           return EXCLUDED_PAIRS.value
             .split('\n')
             .map((pair) => pair.split(/\,\s+|\,\s?/));
@@ -142,6 +141,7 @@ const hydrate = () => {
             })
           ) {
             if (runs === 100) {
+              alert('Too many exclusion list combinations. No more than half the number of total students can be excluded from working together. Please update the exclusion list and try again.')
               throw new Error(
                 'pair algorithm has run too many times, aborting...'
               );
