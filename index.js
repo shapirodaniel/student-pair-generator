@@ -54,10 +54,12 @@ const hydrate = () => {
 
   FILE_INPUT.addEventListener('change', function () {
     if (this.files && this.files[0]) {
-      if (modelPre) {
-        document.removeChild(modelPre);
-        document.removeChild(shuffleBtn);
-        document.removeChild(copyBtn);
+      const existsPre = document.getElementById('modelPre');
+
+      if (existsPre) {
+        PAGE.removeChild(existsPre.nextElementSibling.nextElementSibling);
+        PAGE.removeChild(existsPre.nextElementSibling);
+        PAGE.removeChild(existsPre);
       }
 
       const file = this.files[0];
@@ -188,9 +190,9 @@ const hydrate = () => {
 
         // listen for changes to textures
         EXCLUDED_PAIRS.addEventListener('focusout', () => {
-            exclusionList = getExclusionList();
-            const newModel = parseModel(finalizeModel(), selectedRadioGroup);
-            document.getElementById('modelPre').innerHTML = newModel;
+          exclusionList = getExclusionList();
+          const newModel = parseModel(finalizeModel(), selectedRadioGroup);
+          document.getElementById('modelPre').innerHTML = newModel;
         });
       });
 
