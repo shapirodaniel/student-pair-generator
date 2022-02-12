@@ -45,7 +45,7 @@ const parseModel = (model, starter) => {
   return result;
 };
 
-const renderPage = () => {
+const hydrate = () => {
   const PAGE = document.getElementById('page');
   const FILE_INPUT = document.getElementById('student-list');
 
@@ -68,14 +68,19 @@ const renderPage = () => {
           target.push(names[i]);
         }
 
+        const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
+        const exclusionList = EXCLUDED_PAIRS.value
+          .split('\n')
+          .map((pair) => pair.split(/\,\s+|\,\s?/));
+
         const shufflePairs = () => {
           shuffle(interviewers);
           shuffle(interviewees);
         };
 
-        shufflePairs();
-
         const getModel = () => {
+          shufflePairs();
+
           const model = interviewers.map((p, i) => ({
             interviewer: p,
             interviewee: interviewees[i],
@@ -92,46 +97,45 @@ const renderPage = () => {
           return model;
         };
 
-        const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
-        const exclusionList = EXCLUDED_PAIRS.value
-          .split('\n')
-          .map((pair) => pair.split(/\,\s+|\,\s?/));
-
-        let model = getModel();
-
-        let runs = 0;
-        // rerun pair algorithm if excluded pair is generated
-        while (
-          model.some((m) => {
-            if (m.interviewee_one) {
-              return exclusionList.some(
-                (entry) =>
-                  (entry.includes(m.interviewer) &&
-                    entry.includes(m.interviewee_one)) ||
-                  (entry.includes(m.interviewer) &&
-                    entry.includes(m.interviewee_two)) ||
-                  (entry.includes(m.interviewee_one) &&
-                    entry.includes(m.interviewee_two))
-              );
-            } else {
-              return exclusionList.some(
-                (entry) =>
-                  entry.includes(m.interviewer) && entry.includes(m.interviewee)
+        function finalizeModel() {
+          let model = getModel();
+          let runs = 0;
+          // rerun pair algorithm if excluded pair is generated
+          while (
+            model.some((m) => {
+              if (m.interviewee_one) {
+                return exclusionList.some(
+                  (entry) =>
+                    (entry.includes(m.interviewer) &&
+                      entry.includes(m.interviewee_one)) ||
+                    (entry.includes(m.interviewer) &&
+                      entry.includes(m.interviewee_two)) ||
+                    (entry.includes(m.interviewee_one) &&
+                      entry.includes(m.interviewee_two))
+                );
+              } else {
+                return exclusionList.some(
+                  (entry) =>
+                    entry.includes(m.interviewer) &&
+                    entry.includes(m.interviewee)
+                );
+              }
+            })
+          ) {
+            if (runs === 100) {
+              throw new Error(
+                'pair algorithm has run too many times, aborting...'
               );
             }
-          })
-        ) {
-          if (runs === 100) {
-            throw new Error(
-              'pair algorithm has run too many times, aborting...'
+            console.log(
+              'problematic pair detected, rerunning pairing algorithm...'
             );
+            shufflePairs();
+            model = getModel();
+            runs++;
           }
-          console.log(
-            'problematic pair detected, rerunning pairing algorithm...'
-          );
-          shufflePairs();
-          model = getModel();
-          runs++;
+
+          return model;
         }
 
         // determine lab/workshop or REACTO style emojis
@@ -142,15 +146,25 @@ const renderPage = () => {
 
         // generate model output for copying
         const modelPre = document.createElement('pre');
-        modelPre.innerText = parseModel(model, selectedRadioGroup);
+        modelPre.id = 'modelPre';
+        modelPre.innerText = parseModel(finalizeModel(), selectedRadioGroup);
         PAGE.appendChild(modelPre);
 
         // copy pairs button
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.id = 'shuffleBtn';
+        shuffleBtn.innerText = 'Shuffle Pairs';
+        shuffleBtn.addEventListener('click', () => {
+          const newModel = parseModel(finalizeModel(), selectedRadioGroup);
+          document.getElementById('modelPre').innerHTML = newModel;
+        });
+
         const copyBtn = document.createElement('button');
         copyBtn.innerText = 'Copy Pairs';
         copyBtn.addEventListener('click', async () => {
           await navigator.clipboard.writeText(modelPre.innerText);
         });
+        PAGE.appendChild(shuffleBtn);
         PAGE.appendChild(copyBtn);
         copyBtn.scrollIntoView();
       });
@@ -160,4 +174,4 @@ const renderPage = () => {
   });
 };
 
-renderPage();
+hydrate();
