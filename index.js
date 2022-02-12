@@ -71,11 +71,15 @@ const hydrate = () => {
           target.push(names[i]);
         }
 
-        const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
-        const exclusionList = EXCLUDED_PAIRS.value
-          .split('\n')
-          .map((pair) => pair.split(/\,\s+|\,\s?/));
+        function getExclusionList() {
+          const EXCLUDED_PAIRS = document.getElementById('excluded-pairs');
+          return EXCLUDED_PAIRS.value
+            .split('\n')
+            .map((pair) => pair.split(/\,\s+|\,\s?/));
+        }
 
+        let exclusionList = getExclusionList();
+       
         const shufflePairs = () => {
           shuffle(interviewers);
           shuffle(interviewees);
@@ -173,6 +177,14 @@ const hydrate = () => {
         PAGE.appendChild(shuffleBtn);
         PAGE.appendChild(copyBtn);
         copyBtn.scrollIntoView();
+
+        // listen for changes to textures
+        document.getElementById('excluded-students')
+          .addEventListener('blur', () => {
+            exclusionList = getExclusionList();
+            const newModel = parseModel(finalizeModel(), selectedRadioGroup);
+            document.getElementById('modelPre').innerHTML = newModel;
+          });
       });
 
       reader.readAsBinaryString(file);
