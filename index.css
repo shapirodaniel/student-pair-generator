@@ -6,16 +6,21 @@
   padding: 0;
 }
 
+:root {
+  --size: 20px;
+}
+
 html,
 textarea,
 pre {
   font-family: 'Lato', sans-serif;
   font-family: 'Open Sans', sans-serif;
   font-family: 'Roboto', sans-serif;
+  line-height: var(--size);
 }
 
 body {
-  padding: 20px;
+  padding: var(--size);
 }
 
 #page {
@@ -31,26 +36,49 @@ label {
 
 #radio-group-container,
 #upload-container {
-  width: 100%;
-  text-align: center;
-  padding: 20px 0;
+  padding: var(--size) 0;
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  width: min-content;
 }
 
 #radio-group-container input {
-  margin-right: 20px;
+  margin-right: 4px;
+}
+
+#radio-group-container input:nth-child(3) {
+  margin-left: var(--size);
+}
+
+label[for='type-of-generator'] {
+  text-align: left;
+}
+
+label[for='excluded-pairs'],
+label[for='radio-group-container'] {
+  text-align: left;
+}
+
+label[for='radio-group-container'] {
+  margin-top: 18px;
 }
 
 textarea {
-  margin: 20px 0;
+  margin-top: var(--size);
   padding: 8px;
+  font-size: 16px;
+  resize: vertical;
 }
 
 label[for='student-list'] {
-  padding: 20px;
+  padding: calc(var(--size) + 2px);
   color: white;
   background-color: green;
   border-radius: 4px;
   cursor: pointer;
+  width: calc(100vw - 40px);
+  font-size: 18px;
 }
 
 label[for='student-list']:hover {
@@ -66,12 +94,11 @@ pre {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 18px;
 }
 
 button,
 #shuffleBtn {
-  padding: 20px;
+  padding: var(--size);
   font-size: 18px;
   color: white;
   background-color: blue;

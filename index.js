@@ -88,7 +88,7 @@ const hydrate = () => {
         }
 
         let exclusionList = getExclusionList();
-       
+
         const shufflePairs = () => {
           shuffle(interviewers);
           shuffle(interviewees);
@@ -141,7 +141,9 @@ const hydrate = () => {
             })
           ) {
             if (runs === 100) {
-              alert('Too many exclusion list combinations. No more than half the number of total students can be excluded from working together. Please update the exclusion list and try again.')
+              alert(
+                'Too many exclusion list combinations. Please remove some names and try again.'
+              );
               throw new Error(
                 'pair algorithm has run too many times, aborting...'
               );

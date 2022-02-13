@@ -11,8 +11,12 @@
   <body>
     <section id="page">
       <h1>FSA Student Pair Generator</h1>
+      <label for="radio-group-container">
+        Choosing Lab/Workshop from the two options below will apply 👤 to
+        student pairs, while choosing REACTO will assign 📖 for interviewers and
+        ✏️ for interviewees.
+      </label>
       <div id="radio-group-container">
-        <label for="type-of-generator">Lab/Workshop</label>
         <input
           type="radio"
           id="lab-or-workshop"
@@ -20,21 +24,26 @@
           value="Lab/Workshop"
           checked
         />
-        <label for="type-of-generator">REACTO</label>
+        <label for="type-of-generator">Lab/Workshop</label>
         <input
           type="radio"
           id="reacto"
           name="type-of-generator"
           value="REACTO"
         />
+        <label for="type-of-generator">REACTO</label>
       </div>
       <label for="excluded-pairs">
-        List students who should not be paired as comma-separated values,<br/>
-        one group per line
+        If you want to exclude certain pairs or groups of students from working
+        with one another, you can list them as
+        <strong>comma-separated values</strong> in the space below.
+        <br /><br />Each line will be treated as a single pair / group. This
+        list is "live": any changes made will immediately apply your new
+        exclusion list and reshuffle your pairs.
       </label>
       <textarea
         id="excluded-pairs"
-        placeholder="...alice, bob"
+        placeholder="alice, bob, jane&#10;mary, john"
         rows="4"
       ></textarea>
       <div id="upload-container">
