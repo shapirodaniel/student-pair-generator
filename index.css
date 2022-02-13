@@ -26,6 +26,8 @@ body {
 #page {
   display: flex;
   flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 h1,
@@ -78,6 +80,7 @@ label[for='student-list'] {
   border-radius: 4px;
   cursor: pointer;
   width: calc(100vw - 40px);
+  max-width: 500px;
   font-size: 18px;
 }
 
