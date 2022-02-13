@@ -69,7 +69,8 @@ const hydrate = () => {
         const names = e.target.result
           .replace(/\s+/g, '\n')
           .split('\n')
-          .filter((val) => val);
+          .filter((val) => val)
+          .map((name) => name.toLowerCase());
 
         const interviewers = [];
         const interviewees = [];
@@ -84,7 +85,8 @@ const hydrate = () => {
         function getExclusionList() {
           return EXCLUDED_PAIRS.value
             .split('\n')
-            .map((pair) => pair.split(/\,\s+|\,\s?/));
+            .map((pair) => pair.split(/\,\s+|\,\s?/))
+            .map((subarr) => subarr.map((val) => val.toLowerCase()));
         }
 
         let exclusionList = getExclusionList();
